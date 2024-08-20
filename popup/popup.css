@@ -1,0 +1,53 @@
+/* css reset */
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+body {
+  min-width: 400px;
+  font-family: Arial, sans-serif;
+  background-color: #212121;
+  padding: 5px;
+}
+
+textarea {
+  width: 100%;
+  height: 200px;
+  resize: none;
+  padding: 1rem;
+  background-color: #181a1b;
+  color: white;
+  border-radius: 5px;
+  margin-bottom: 5px;
+}
+
+button {
+  background-color: #bf016b;
+  border: none;
+  border-radius: 5px;
+  color: white;
+  padding: 10px 20px;
+  text-align: center;
+  text-decoration: none;
+  display: inline-block;
+  font-size: 16px;
+  cursor: pointer;
+  transition: background-color 0.5s;
+}
+
+/* button:hover {
+  background-color: #ff008c;
+} */
+
+.btn-container {
+  display: flex;
+  width: 100%;
+  gap: 5px;
+  margin-bottom: 5px;
+}
+
+.btn-container button {
+  flex-grow: 1;
+}
