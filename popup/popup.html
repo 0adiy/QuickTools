@@ -6,29 +6,36 @@
 	<meta name="viewport" content="width=device-width, initial-scale=1.0">
 	<meta charset="UTF-8">
 	<link rel="stylesheet" href="popup.css" />
-	<link rel="stylesheet" href="button.css" />
+	<!-- <link rel="stylesheet" href="button.css" /> -->
 	<script defer src="popup.js" type="module"></script>
 </head>
 
 <body>
-	<div class="btn-container">
-		<button id="enableContextMenu" class="fancy-button"> Enable Context menu </button>
-		<button id="enableSelection" class="fancy-button"> Enable Selection</button>
-		<button id="enableContentEditing" class="fancy-button"> Enable Content Editing</button>
-	</div>
-	<div class="btn-container">
-		<button id="reloadAll" class="fancy-button"> 🔄️ Reload All</button>
-		<button id="groupTabs" class="fancy-button"> Group Tabs by Domain</button>
-	</div>
-	<div class="btn-container">
-		<button id="getUrls" class="fancy-button">Get URLs</button>
-		<button id="openUrls" class="fancy-button">Open URLs</button>
-	</div>
-	<textarea id="urlTextbox" placeholder="Paste URLs here, one per line..."></textarea>
-	<div class="btn-container">
-		<button id="clearText" title="Clear Text" class="fancy-button">🗑️ Clear</button>
-		<button id="copyText" title="Copy Text" class="fancy-button">📋 Copy</button>
-	</div>
+	<details open>
+		<summary>Custom scripts</summary>
+		<div class="btn-container">
+			<button id="enableContextMenu" class="" title="Enable Context menu"> Enable Context menu </button>
+			<button id="enableSelection" class="" title="Enable Selection"> Enable Selection</button>
+			<button id="enableContentEditing" class="" title="Enable Content Editing"> Enable Content Editing</button>
+		</div>
+	</details>
+	<details open>
+		<summary>Tabs</summary>
+		<div class="btn-container">
+			<button id="reloadAll" title="Reload All"> 🔄️</button>
+			<button id="groupTabs" title="Group Tabs by Domain"> Group Tabs by Domain</button>
+		</div>
+	</details>
+	<details open>
+		<summary>Temp</summary>
+		<div class="btn-container">
+			<button id="getUrls" title="Get URLs">Get URLs</button>
+			<button id="openUrls" title="Open URLs">Open URLs</button>
+			<button id="clearText" title="Clear Text" title="Clear">🗑️</button>
+			<button id="copyText" title="Copy Text" title="Copy">📋</button>
+		</div>
+		<textarea id="urlTextbox" placeholder="Paste URLs here, one per line..."></textarea>
+	</details>
 </body>
 
 </html>

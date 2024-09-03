@@ -1,15 +1,36 @@
+:root {
+  color-scheme: dark;
+  scrollbar-width: thin;
+  scroll-behavior: smooth;
+  scrollbar-gutter: stable both-edges;
+}
 /* css reset */
 * {
   margin: 0;
   padding: 0;
   box-sizing: border-box;
 }
-
-body {
+html {
   min-width: 400px;
+}
+body {
   font-family: Arial, sans-serif;
   background-color: #212121;
-  padding: 5px;
+  color: white;
+  padding-top: 16px;
+  padding-bottom: 16px;
+}
+
+summary {
+  color: white;
+  margin-bottom: 12px;
+  padding: 8px;
+  user-select: none;
+  font-size: 1rem;
+  background-color: #111;
+  width: max-content;
+  border-radius: 8px;
+  cursor: pointer;
 }
 
 textarea {
@@ -17,35 +38,45 @@ textarea {
   height: 200px;
   resize: none;
   padding: 1rem;
-  background-color: #181a1b;
-  color: white;
-  border-radius: 5px;
+  color: inherit;
   margin-bottom: 5px;
+  border: none;
+  border-radius: 8px;
+  background: #212121;
+  box-shadow: inset 5px 5px 10px #101010, inset -5px -5px 10px #323232;
+}
+
+textarea:focus,
+textarea:active {
+  outline: 4px solid black;
 }
 
 button {
-  background-color: #bf016b;
+  /* background-color: black; */
+  color: inherit;
   border: none;
-  border-radius: 5px;
-  color: white;
-  padding: 10px 20px;
-  text-align: center;
-  text-decoration: none;
-  display: inline-block;
-  font-size: 16px;
+  padding: 0.5em;
+  border-radius: 8px;
+  margin: 10px;
   cursor: pointer;
-  transition: background-color 0.5s;
+  transition: background-color 0.4s;
+  background: #212121;
+  box-shadow: 5px 5px 10px #101010, -5px -5px 10px #323232;
 }
 
-/* button:hover {
-  background-color: #ff008c;
-} */
+button:hover {
+  background-color: #333;
+}
+button:active {
+  background: #212121;
+  box-shadow: inset 5px 5px 10px #1a1a1a, inset -5px -5px 10px #565656;
+}
 
 .btn-container {
   display: flex;
   width: 100%;
   gap: 5px;
-  margin-bottom: 5px;
+  margin-bottom: 16px;
 }
 
 .btn-container button {
