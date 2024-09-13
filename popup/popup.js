@@ -1,13 +1,3 @@
-// utils
-const $ = document.querySelector.bind(document);
-const $$ = document.querySelectorAll.bind(document);
-
-// TODO - load if the `open` is set on a details element or not
-
-// Load urlTextbox with local storage
-$("#urlTextbox").value = localStorage.getItem("urlTextbox") || "";
-$("#urlTextbox").focus();
-
 // Import handler functions
 import {
 	handleInput,
@@ -20,7 +10,29 @@ import {
 	handleEnableContextMenu,
 	handleEnableSelection,
 	handleEnableContentEditing,
+	handleClearCookies,
 } from "./handlers.js";
+
+// utils
+const $ = document.querySelector.bind(document);
+const $$ = document.querySelectorAll.bind(document);
+
+// Attaching and loading <details> `open` attribute
+for (let x of ["custom-scripts-category", "tabs-category", "temp-category"]) {
+	// console.log(x, localStorage.getItem(x));
+	const ref = $(`#${x}`);
+	ref.open = localStorage.getItem(x) === "true" ? true : false;
+
+	ref.addEventListener("click", (e) => {
+		const val = ref.open;
+		localStorage.setItem(x, `${!val}`);
+		ref.open = val;
+	});
+}
+
+// Load urlTextbox with local storage
+$("#urlTextbox").value = localStorage.getItem("urlTextbox") || "";
+$("#urlTextbox").focus();
 
 // Attaching listeners
 $("#urlTextbox").addEventListener("input", handleInput);
@@ -36,31 +48,4 @@ $("#enableContentEditing").addEventListener(
 	"click",
 	handleEnableContentEditing
 );
-
-$("#clearCookies").addEventListener("click", () => {
-	chrome.tabs.query({ active: true, currentWindow: true }, (tabs) => {
-		if (tabs.length > 0) {
-			const domain = new URL(tabs[0].url).hostname;
-			console.log("Current domain:", domain);
-
-			chrome.cookies.getAll({ domain }, (cookies) => {
-				console.log("Cookies found:", cookies);
-				if (cookies.length === 0) {
-					console.warn("No cookies found for this domain.");
-				} else {
-					cookies.forEach((cookie) => {
-						chrome.cookies.remove({
-							url: `http${cookie.secure ? "s" : ""}://${cookie.domain}${
-								cookie.path
-							}`,
-							name: cookie.name,
-						});
-					});
-					console.log("Cookies cleared.");
-				}
-			});
-		} else {
-			console.warn("No active tab found.");
-		}
-	});
-});
+$("#clearCookies").addEventListener("click", handleClearCookies);
