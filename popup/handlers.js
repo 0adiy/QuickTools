@@ -16,7 +16,7 @@ export function handleOpenUrls() {
   const urls = $("#urlTextbox")
     .value.split("\n")
     .map(url => url.trim())
-    .filter(url => url.length > 0);
+    .filter(url => url.startsWith("http"));
 
   urls.forEach(url => chrome.tabs.create({ url }));
 }

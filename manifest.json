@@ -13,10 +13,12 @@
   "permissions": [
     "debugger",
     "tabs",
+    "activeTab",
+    "cookies",
     "tabGroups",
     "scripting",
     "storage",
     "contextMenus"
   ],
-  "host_permissions": ["https://*/*"]
+  "host_permissions": ["<all_urls>"]
 }
