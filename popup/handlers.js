@@ -29,6 +29,7 @@ export function handleClearText() {
 
 export function handleCopyText() {
 	const text = $("#urlTextbox").value;
+	if (text.length === 0) return;
 	navigator.clipboard.writeText(text);
 }
 

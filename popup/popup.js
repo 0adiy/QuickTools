@@ -19,14 +19,16 @@ const $$ = document.querySelectorAll.bind(document);
 
 // Attaching and loading <details> `open` attribute
 for (let x of ["custom-scripts-category", "tabs-category", "temp-category"]) {
-	// console.log(x, localStorage.getItem(x));
-	const ref = $(`#${x}`);
-	ref.open = localStorage.getItem(x) === "true" ? true : false;
+	console.log(x, localStorage.getItem(x));
+	const detailsRef = $(`#${x}`);
+	const summaryRef = detailsRef.children[0];
 
-	ref.addEventListener("click", (e) => {
-		const val = ref.open;
+	detailsRef.open = localStorage.getItem(x) === "true" ? true : false;
+
+	summaryRef.addEventListener("click", (e) => {
+		const val = detailsRef.open;
 		localStorage.setItem(x, `${!val}`);
-		ref.open = val;
+		detailsRef.open = val;
 	});
 }
 
