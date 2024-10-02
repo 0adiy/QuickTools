@@ -14,7 +14,8 @@ export async function handleGetUrls() {
 
 export function handleOpenUrls() {
 	const urls = $("#urlTextbox")
-		.value.split("\n")
+		.value.replace(/\/\*.*\*\//gs, "")
+		.split("\n")
 		.map((url) => url.trim())
 		.filter((url) => url.startsWith("http"));
 

@@ -34,7 +34,7 @@ for (let x of ["custom-scripts-category", "tabs-category", "temp-category"]) {
 
 // Load urlTextbox with local storage
 $("#urlTextbox").value = localStorage.getItem("urlTextbox") || "";
-$("#urlTextbox").focus();
+// $("#urlTextbox").focus();
 
 // Attaching listeners
 $("#urlTextbox").addEventListener("input", handleInput);
