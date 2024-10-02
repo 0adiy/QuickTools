@@ -169,3 +169,30 @@ export function handleClearCookies() {
 		}
 	});
 }
+
+export function handleComment() {
+	const textareaRef = $("#urlTextbox");
+	const start = textareaRef.selectionStart;
+	const end = textareaRef.selectionEnd;
+
+	// console.log(start, ":",end);
+
+	// modify
+	textareaRef.value =
+		textareaRef.value.slice(0, start) +
+		"/*\n" +
+		textareaRef.value.slice(start, end) +
+		"\n*/" +
+		textareaRef.value.slice(end);
+
+	textareaRef.dispatchEvent(
+		new Event("input", {
+			bubbles: true,
+			cancelable: true,
+		})
+	);
+
+	//reset
+	textareaRef.selectionStart = start;
+	textareaRef.selectionEnd = end + 8;
+}

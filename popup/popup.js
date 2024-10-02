@@ -11,6 +11,7 @@ import {
 	handleEnableSelection,
 	handleEnableContentEditing,
 	handleClearCookies,
+	handleComment,
 } from "./handlers.js";
 
 // utils
@@ -51,3 +52,10 @@ $("#enableContentEditing").addEventListener(
 	handleEnableContentEditing
 );
 $("#clearCookies").addEventListener("click", handleClearCookies);
+
+// Shortcuts
+document.addEventListener("keydown", (e) => {
+	if (e.ctrlKey && e.key === "/") {
+		handleComment();
+	}
+});
