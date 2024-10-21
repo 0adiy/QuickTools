@@ -6,15 +6,25 @@ export function handleInput() {
 	localStorage.setItem("urlTextbox", $("#urlTextbox").value);
 }
 
-export async function handleGetUrls() {
+export async function handleGetUrls(append = true, titles = false) {
 	const tabs = await chrome.tabs.query({ currentWindow: true });
-	$("#urlTextbox").value = tabs.map((tab) => tab.url).join("\n");
+	if (append == false) $("#urlTextbox").value = "";
+	else $("#urlTextbox").value += "\n";
+
+	if (titles) {
+		$("#urlTextbox").value += tabs
+			.map((tab) => `#${tab.title}\n${tab.url}\n`)
+			.join("\n");
+	} else {
+		$("#urlTextbox").value += tabs.map((tab) => tab.url).join("\n");
+	}
+
 	localStorage.setItem("urlTextbox", $("#urlTextbox").value);
 }
 
 export function handleOpenUrls() {
 	const urls = $("#urlTextbox")
-		.value.replace(/\/\*.*\*\//gs, "")
+		.value.replace(/\/\*.*?\*\//gs, "")
 		.split("\n")
 		.map((url) => url.trim())
 		.filter((url) => url.startsWith("http"));
@@ -42,15 +52,17 @@ export function handleReloadAll() {
 
 export function handleGroupTabs() {
 	chrome.tabs.query({}, (tabs) => {
-		const domainToTabs = tabs.reduce((acc, tab) => {
-			const url = new URL(tab.url);
-			const domain = url.hostname;
-			if (!acc[domain]) {
-				acc[domain] = [];
-			}
-			acc[domain].push(tab.id);
-			return acc;
-		}, {});
+		const domainToTabs = tabs
+			.filter((tab) => !tab.pinned)
+			.reduce((acc, tab) => {
+				const url = new URL(tab.url);
+				const domain = url.hostname;
+				if (!acc[domain]) {
+					acc[domain] = [];
+				}
+				acc[domain].push(tab.id);
+				return acc;
+			}, {});
 
 		chrome.tabGroups.query({}, (groups) => {
 			const domainToGroupId = {};
@@ -70,25 +82,11 @@ export function handleGroupTabs() {
 						tabIds: tabIds,
 					});
 				} else {
-					chrome.tabs.group(
-						{
-							tabIds: tabIds,
-						},
-						(newGroupId) => {
-							chrome.tabGroups.create(
-								{
-									title: domain,
-									color: "blue",
-								},
-								(group) => {
-									chrome.tabs.group({
-										groupId: group.id,
-										tabIds: tabIds,
-									});
-								}
-							);
-						}
-					);
+					chrome.tabs.group({ tabIds: tabIds }, (newGroupId) => {
+						chrome.tabGroups.create({ title: domain, color: "blue" }, (group) =>
+							chrome.tabs.group({ groupId: group.id, tabIds: tabIds })
+						);
+					});
 				}
 			}
 		});
@@ -101,13 +99,12 @@ export function handleEnableContextMenu() {
 
 		chrome.scripting.executeScript({
 			target: { tabId: tabId },
-			func: () => {
+			func: () =>
 				document.addEventListener(
 					"contextmenu",
 					(e) => e.stopPropagation(),
 					true
-				);
-			},
+				),
 		});
 	});
 }
@@ -135,9 +132,7 @@ export function handleEnableContentEditing() {
 
 		chrome.scripting.executeScript({
 			target: { tabId: tabId },
-			func: () => {
-				document.body.contentEditable = true;
-			},
+			func: () => (document.body.contentEditable = true),
 		});
 	});
 }

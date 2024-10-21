@@ -39,7 +39,15 @@ $("#urlTextbox").value = localStorage.getItem("urlTextbox") || "";
 
 // Attaching listeners
 $("#urlTextbox").addEventListener("input", handleInput);
-$("#getUrls").addEventListener("click", handleGetUrls);
+$("#getUrls").addEventListener("click", (e) => {
+	if (e.ctrlKey) handleGetUrls(true, true);
+	else handleGetUrls(true, false);
+});
+$("#getUrls").addEventListener("contextmenu", (e) => {
+	e.preventDefault();
+	if (e.ctrlKey) handleGetUrls(false, true);
+	else handleGetUrls(false, false);
+});
 $("#openUrls").addEventListener("click", handleOpenUrls);
 $("#clearText").addEventListener("click", handleClearText);
 $("#copyText").addEventListener("click", handleCopyText);
@@ -55,7 +63,5 @@ $("#clearCookies").addEventListener("click", handleClearCookies);
 
 // Shortcuts
 document.addEventListener("keydown", (e) => {
-	if (e.ctrlKey && e.key === "/") {
-		handleComment();
-	}
+	if (e.ctrlKey && e.key === "/") handleComment();
 });
