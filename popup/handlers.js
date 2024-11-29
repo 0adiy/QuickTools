@@ -9,7 +9,8 @@ export function handleInput() {
 export async function handleGetUrls(append = true, titles = false) {
 	const tabs = await chrome.tabs.query({ currentWindow: true });
 	if (append == false) $("#urlTextbox").value = "";
-	else $("#urlTextbox").value += "\n";
+
+	if ($("#urlTextbox").value.length > 0) $("#urlTextbox").value += "\n";
 
 	if (titles) {
 		$("#urlTextbox").value += tabs
@@ -54,6 +55,7 @@ export function handleGroupTabs() {
 	chrome.tabs.query({}, (tabs) => {
 		const domainToTabs = tabs
 			.filter((tab) => !tab.pinned)
+			.filter((tab) => tab.groupId == -1) // filter tabs that are ungrouped
 			.reduce((acc, tab) => {
 				const url = new URL(tab.url);
 				const domain = url.hostname;
