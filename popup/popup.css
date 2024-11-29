@@ -46,7 +46,7 @@ body {
   display: flex;
   flex-direction: column;
   gap: 0.5rem;
-  align-items: flex-start;
+  /* align-items: flex-start; */
   justify-content: flex-start;
   align-self: stretch;
   flex-shrink: 0;
