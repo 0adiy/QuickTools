@@ -14,9 +14,30 @@ import {
 	handleComment,
 } from "./handlers.js";
 
+
 // utils
 const $ = document.querySelector.bind(document);
 const $$ = document.querySelectorAll.bind(document);
+
+let verboseBtn = document.getElementById("verboseBtn");
+function updateVerboseBtnUI(updateValue = false){
+	let verbose = localStorage.getItem("verbose") ?? "false";
+	if(updateValue){
+		verbose = verbose == "true" ? "false" : "true";
+		localStorage.setItem("verbose", verbose);
+	}
+	if(verbose == "false"){
+		verboseBtn.classList.remove("selected");
+		verboseBtn.classList.add("unselected");
+	}else{
+		verboseBtn.classList.remove("unselected")
+		verboseBtn.classList.add("selected")
+	}
+}
+updateVerboseBtnUI();
+verboseBtn.onclick = () => { updateVerboseBtnUI(true); };
+
+
 
 // Attaching and loading <details> `open` attribute
 for (let x of ["custom-scripts-category", "tabs-category", "temp-category"]) {
@@ -33,6 +54,8 @@ for (let x of ["custom-scripts-category", "tabs-category", "temp-category"]) {
 	});
 }
 
+
+
 // Load urlTextbox with local storage
 $("#urlTextbox").value = localStorage.getItem("urlTextbox") || "";
 // $("#urlTextbox").focus();
@@ -40,7 +63,8 @@ $("#urlTextbox").value = localStorage.getItem("urlTextbox") || "";
 // Attaching listeners
 $("#urlTextbox").addEventListener("input", handleInput);
 $("#getUrls").addEventListener("click", (e) => {
-	if (e.ctrlKey) handleGetUrls(true, true);
+	let verbose = localStorage.getItem("verbose");
+	if (verbose == "true") handleGetUrls(true, true);
 	else handleGetUrls(true, false);
 });
 $("#getUrls").addEventListener("contextmenu", (e) => {
