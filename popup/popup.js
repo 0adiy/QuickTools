@@ -1,76 +1,116 @@
-// Import handler functions
 import {
-	handleInput,
-	handleGetUrls,
-	handleOpenUrls,
-	handleClearText,
-	handleCopyText,
-	handleReloadAll,
-	handleGroupTabs,
-	handleEnableContextMenu,
-	handleEnableSelection,
-	handleEnableContentEditing,
-	handleClearCookies,
-	handleComment,
+  handleInput,
+  handleGetUrls,
+  handleOpenUrls,
+  handleClearText,
+  handleCopyText,
+  handleReloadAll,
+  handleGroupTabs,
+  handleEnableContextMenu,
+  handleEnableSelection,
+  handleEnableContentEditing,
+  handleClearCookies,
+  handleComment,
+  handleGrabLinksFromElement,
 } from "./handlers.js";
 
+///////////
+// utils //
+///////////
 
-// utils
 const $ = document.querySelector.bind(document);
 const $$ = document.querySelectorAll.bind(document);
 
-let verboseBtn = document.getElementById("verboseBtn");
-function updateVerboseBtnUI(updateValue = false){
-	let verbose = localStorage.getItem("verbose") ?? "false";
-	if(updateValue){
-		verbose = verbose == "true" ? "false" : "true";
-		localStorage.setItem("verbose", verbose);
-	}
-	if(verbose == "false"){
-		verboseBtn.classList.remove("selected");
-		verboseBtn.classList.add("unselected");
-	}else{
-		verboseBtn.classList.remove("unselected")
-		verboseBtn.classList.add("selected")
-	}
+//////////////////////
+// Verbose handling //
+//////////////////////
+
+// Load verbose btn state and attach updater on click
+const verboseBtn = $("#verboseBtn");
+function updateVerboseBtnUI(updateValue = false) {
+  chrome.storage.local.get("verbose", result => {
+    let verbose = result.verbose ?? false;
+
+    if (updateValue) {
+      verbose = !verbose;
+      chrome.storage.local.set({ verbose });
+    }
+
+    // REVIEW - why use of 2 classes??
+    if (!verbose) {
+      verboseBtn.classList.remove("selected");
+      verboseBtn.classList.add("unselected");
+    } else {
+      verboseBtn.classList.remove("unselected");
+      verboseBtn.classList.add("selected");
+    }
+  });
 }
+
 updateVerboseBtnUI();
-verboseBtn.onclick = () => { updateVerboseBtnUI(true); };
 
+verboseBtn.onclick = () => {
+  updateVerboseBtnUI(true);
+};
 
+/////////////////////////////////////
+// Handle Categories (details tag) //
+/////////////////////////////////////
 
-// Attaching and loading <details> `open` attribute
-for (let x of ["custom-scripts-category", "tabs-category", "temp-category"]) {
-	console.log(x, localStorage.getItem(x));
-	const detailsRef = $(`#${x}`);
-	const summaryRef = detailsRef.children[0];
+// Attaching click event handler and loading state of <details> open attribute
+const sectionIds = [
+  "custom-scripts-category",
+  "tabs-category",
+  "temp-category",
+];
 
-	detailsRef.open = localStorage.getItem(x) === "true" ? true : false;
+sectionIds.forEach(id => {
+  const detailsRef = document.getElementById(id);
+  const summaryRef = detailsRef.querySelector("summary");
 
-	summaryRef.addEventListener("click", (e) => {
-		const val = detailsRef.open;
-		localStorage.setItem(x, `${!val}`);
-		detailsRef.open = val;
-	});
-}
+  // Load initial state from chrome.storage
+  // REVIEW - why not [id] instead of just id? why does this work?
+  chrome.storage.local.get(id, result => {
+    const isOpen = result[id];
+    if (typeof isOpen === "boolean") {
+      detailsRef.open = isOpen;
+    }
+  });
 
-
-
-// Load urlTextbox with local storage
-$("#urlTextbox").value = localStorage.getItem("urlTextbox") || "";
-// $("#urlTextbox").focus();
-
-// Attaching listeners
-$("#urlTextbox").addEventListener("input", handleInput);
-$("#getUrls").addEventListener("click", (e) => {
-	let verbose = localStorage.getItem("verbose");
-	if (verbose == "true") handleGetUrls(true, true);
-	else handleGetUrls(true, false);
+  summaryRef.addEventListener("click", () => {
+    // Toggle state and persist
+    const newVal = !detailsRef.open;
+    chrome.storage.local.set({ [id]: newVal });
+  });
 });
-$("#getUrls").addEventListener("contextmenu", (e) => {
-	e.preventDefault();
-	if (e.ctrlKey) handleGetUrls(false, true);
-	else handleGetUrls(false, false);
+
+////////////////////////////////////////
+// Load urlTextbox with local storage //
+////////////////////////////////////////
+chrome.storage.local
+  .get(["urlTextbox"])
+  .then(res => res.urlTextbox)
+  .then(urlTextboxValue => {
+    $("#urlTextbox").value = urlTextboxValue || "";
+  });
+
+// $("#urlTextbox").focus(); // TODO - why not??
+
+/////////////////////////
+// Attaching listeners //
+/////////////////////////
+$("#urlTextbox").addEventListener("input", handleInput);
+$("#getUrls").addEventListener("click", e => {
+  // based on verbose or not, pass titles=true/false in handleGetUrls
+  chrome.storage.local
+    .get(["verbose"])
+    .then(result => result.verbose)
+    .then(verbose => handleGetUrls(true, verbose));
+});
+$("#getUrls").addEventListener("contextmenu", e => {
+  e.preventDefault();
+  if (e.ctrlKey) handleGetUrls(false, true);
+  else handleGetUrls(false, false);
 });
 $("#openUrls").addEventListener("click", handleOpenUrls);
 $("#clearText").addEventListener("click", handleClearText);
@@ -80,12 +120,18 @@ $("#groupTabs").addEventListener("click", handleGroupTabs);
 $("#enableContextMenu").addEventListener("click", handleEnableContextMenu);
 $("#enableSelection").addEventListener("click", handleEnableSelection);
 $("#enableContentEditing").addEventListener(
-	"click",
-	handleEnableContentEditing
+  "click",
+  handleEnableContentEditing
 );
 $("#clearCookies").addEventListener("click", handleClearCookies);
+$("#grabLinksFromElement").addEventListener(
+  "click",
+  handleGrabLinksFromElement
+);
 
-// Shortcuts
-document.addEventListener("keydown", (e) => {
-	if (e.ctrlKey && e.key === "/") handleComment();
+///////////////
+// Shortcuts //
+///////////////
+document.addEventListener("keydown", e => {
+  if (e.ctrlKey && e.key === "/") handleComment();
 });

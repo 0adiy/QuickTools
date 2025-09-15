@@ -20,5 +20,12 @@
     "storage",
     "contextMenus"
   ],
-  "host_permissions": ["<all_urls>"]
+  "host_permissions": ["<all_urls>"],
+  "content_scripts": [
+    {
+      "matches": ["<all_urls>"],
+      "js": ["contentscripts/grabLinksFromElement.js"],
+      "run_at": "document_idle"
+    }
+  ]
 }

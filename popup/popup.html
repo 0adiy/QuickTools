@@ -1,490 +1,246 @@
 <!DOCTYPE html>
 <html>
-	<head>
-		<title>Tab URL Extractor</title>
-		<meta name="viewport" content="width=device-width, initial-scale=1.0" />
-		<meta charset="UTF-8" />
-		<link rel="stylesheet" href="popup.css" />
-		<script defer src="popup.js" type="module"></script>
-	</head>
 
-	<body>
-		<details id="custom-scripts-category" class="card">
-			<!-- category -->
-			<summary class="category-box">
-				<div class="category-text">Custom Scripts</div>
-				<div class="category-icon-container arrow-down">
-					<svg
-						class="category-icon"
-						width="24"
-						height="25"
-						viewBox="0 0 24 25"
-						fill="none"
-						xmlns="http://www.w3.org/2000/svg"
-					>
+<head>
+	<title>Tab URL Extractor</title>
+	<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+	<meta charset="UTF-8" />
+	<link rel="stylesheet" href="popup.css" />
+	<script defer src="popup.js" type="module"></script>
+</head>
+
+<body>
+	<details id="custom-scripts-category" class="card">
+		<!-- category -->
+		<summary class="category-box">
+			<div class="category-text">Custom Scripts</div>
+			<div class="category-icon-container arrow-down">
+				<svg class="category-icon" width="24" height="25" viewBox="0 0 24 25" fill="none"
+					xmlns="http://www.w3.org/2000/svg">
+					<path d="M19.92 15.55L13.4 9.03C12.63 8.26 11.37 8.26 10.6 9.03L4.07996 15.55" stroke="currentColor"
+						stroke-width="3.5" stroke-miterlimit="10" stroke-linecap="round" stroke-linejoin="round" />
+				</svg>
+			</div>
+		</summary>
+		<!-- details -->
+		<div class="button-container">
+			<!-- Button - Menu -->
+			<button class="button" id="enableContextMenu" title="Enable Context menu">
+				<svg class="button-icon" width="24" height="24" viewBox="0 0 24 24" fill="none"
+					xmlns="http://www.w3.org/2000/svg">
+					<path
+						d="M17.54 8.31C18.8986 8.31 20 7.20862 20 5.85C20 4.49138 18.8986 3.39 17.54 3.39C16.1814 3.39 15.08 4.49138 15.08 5.85C15.08 7.20862 16.1814 8.31 17.54 8.31Z"
+						stroke="currentColor" stroke-width="2.5" stroke-miterlimit="10" stroke-linecap="round"
+						stroke-linejoin="round" />
+					<path
+						d="M6.46001 8.31C7.81863 8.31 8.92 7.20862 8.92 5.85C8.92 4.49138 7.81863 3.39 6.46001 3.39C5.10139 3.39 4 4.49138 4 5.85C4 7.20862 5.10139 8.31 6.46001 8.31Z"
+						stroke="currentColor" stroke-width="2.5" stroke-miterlimit="10" stroke-linecap="round"
+						stroke-linejoin="round" />
+					<path
+						d="M17.54 20.61C18.8986 20.61 20 19.5086 20 18.15C20 16.7914 18.8986 15.69 17.54 15.69C16.1814 15.69 15.08 16.7914 15.08 18.15C15.08 19.5086 16.1814 20.61 17.54 20.61Z"
+						stroke="currentColor" stroke-width="2.5" stroke-miterlimit="10" stroke-linecap="round"
+						stroke-linejoin="round" />
+					<path
+						d="M6.46001 20.61C7.81863 20.61 8.92 19.5086 8.92 18.15C8.92 16.7914 7.81863 15.69 6.46001 15.69C5.10139 15.69 4 16.7914 4 18.15C4 19.5086 5.10139 20.61 6.46001 20.61Z"
+						stroke="currentColor" stroke-width="2.5" stroke-miterlimit="10" stroke-linecap="round"
+						stroke-linejoin="round" />
+				</svg>
+				<div class="button-text">Menu</div>
+			</button>
+			<!-- Button - Select -->
+			<button class="button" id="enableSelection" title="Enable Selection">
+				<svg class="button-icon" width="24" height="24" viewBox="0 0 24 24" fill="none"
+					xmlns="http://www.w3.org/2000/svg">
+					<path d="M22 12V9C22 4 20 2 15 2H9C4 2 2 4 2 9V15C2 20 4 22 9 22H12" stroke="currentColor" stroke-width="2.5"
+						stroke-linecap="round" stroke-linejoin="round" />
+					<path
+						d="M20.96 17.84L19.33 18.39C18.88 18.54 18.52 18.89 18.37 19.35L17.82 20.98C17.35 22.39 15.37 22.36 14.93 20.95L13.08 15C12.72 13.82 13.81 12.72 14.98 13.09L20.94 14.94C22.34 15.38 22.36 17.37 20.96 17.84Z"
+						stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" />
+				</svg>
+				<div class="button-text">Select</div>
+			</button>
+			<!-- Button - Edit -->
+			<button class="button" id="enableContentEditing" title="Enable Content Editing">
+				<svg class="button-icon" width="24" height="24" viewBox="0 0 24 24" fill="none"
+					xmlns="http://www.w3.org/2000/svg">
+					<path d="M11 2H9C4 2 2 4 2 9V15C2 20 4 22 9 22H15C20 22 22 20 22 15V13" stroke="currentColor"
+						stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" />
+					<path
+						d="M16.04 3.02L8.16 10.9C7.86 11.2 7.56 11.79 7.5 12.22L7.07 15.23C6.91 16.32 7.68 17.08 8.77 16.93L11.78 16.5C12.2 16.44 12.79 16.14 13.1 15.84L20.98 7.96C22.34 6.6 22.98 5.02 20.98 3.02C18.98 1.02 17.4 1.66 16.04 3.02Z"
+						stroke="currentColor" stroke-width="2.5" stroke-miterlimit="10" stroke-linecap="round"
+						stroke-linejoin="round" />
+					<path d="M14.91 4.15C15.58 6.54 17.45 8.41 19.85 9.09" stroke="currentColor" stroke-width="2.5"
+						stroke-miterlimit="10" stroke-linecap="round" stroke-linejoin="round" />
+				</svg>
+				<div class="button-text">Edit</div>
+			</button>
+			<!-- Button - Clear Cookies -->
+			<button class="button" id="clearCookies" title="Clear Cookies and Reload the current tab">
+				<svg class="button-icon" width="24" height="24" viewBox="0 0 24 24" fill="none"
+					xmlns="http://www.w3.org/2000/svg">
+					<path d="M11 2H9C4 2 2 4 2 9V15C2 20 4 22 9 22H15C20 22 22 20 22 15V13" stroke="currentColor"
+						stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" />
+					<path
+						d="M16.04 3.02L8.16 10.9C7.86 11.2 7.56 11.79 7.5 12.22L7.07 15.23C6.91 16.32 7.68 17.08 8.77 16.93L11.78 16.5C12.2 16.44 12.79 16.14 13.1 15.84L20.98 7.96C22.34 6.6 22.98 5.02 20.98 3.02C18.98 1.02 17.4 1.66 16.04 3.02Z"
+						stroke="currentColor" stroke-width="2.5" stroke-miterlimit="10" stroke-linecap="round"
+						stroke-linejoin="round" />
+					<path d="M14.91 4.15C15.58 6.54 17.45 8.41 19.85 9.09" stroke="currentColor" stroke-width="2.5"
+						stroke-miterlimit="10" stroke-linecap="round" stroke-linejoin="round" />
+				</svg>
+				<div class="button-text">Clear Cookie</div>
+			</button>
+		</div>
+	</details>
+
+	<details id="tabs-category" class="card">
+		<!-- category -->
+		<summary class="category-box">
+			<div class="category-text">Tab Utilities</div>
+			<div class="category-icon-container arrow-down">
+				<svg class="category-icon" width="24" height="25" viewBox="0 0 24 25" fill="none"
+					xmlns="http://www.w3.org/2000/svg">
+					<path d="M19.92 15.55L13.4 9.03C12.63 8.26 11.37 8.26 10.6 9.03L4.07996 15.55" stroke="currentColor"
+						stroke-width="3.5" stroke-miterlimit="10" stroke-linecap="round" stroke-linejoin="round" />
+				</svg>
+			</div>
+		</summary>
+		<!-- details -->
+		<div class="button-container">
+			<!-- Button - Reload All -->
+			<button class="button" id="reloadAll" title="Reload all tabs">
+				<svg class="button-icon" width="24" height="24" viewBox="0 0 24 24" fill="none"
+					xmlns="http://www.w3.org/2000/svg">
+					<path
+						d="M14.55 21.67C18.84 20.54 22 16.64 22 12C22 6.48 17.56 2 12 2C5.33 2 2 7.56 2 7.56M2 7.56V3M2 7.56H4.01H6.44"
+						stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" />
+					<path d="M2 12C2 17.52 6.48 22 12 22" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"
+						stroke-linejoin="round" stroke-dasharray="3 3" />
+				</svg>
+
+				<div class="button-text">Reload All</div>
+			</button>
+			<!-- Button - Group Tabs-->
+			<button class="button" id="groupTabs" title="Group Tabs by Domain">
+				<svg class="button-icon" width="24" height="24" viewBox="0 0 24 24" fill="none"
+					xmlns="http://www.w3.org/2000/svg">
+					<path
+						d="M13.01 2.92L18.91 5.54C20.61 6.29 20.61 7.53 18.91 8.28L13.01 10.9C12.34 11.2 11.24 11.2 10.57 10.9L4.67002 8.28C2.97002 7.53 2.97002 6.29 4.67002 5.54L10.57 2.92C11.24 2.62 12.34 2.62 13.01 2.92Z"
+						stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" />
+					<path
+						d="M3 11C3 11.84 3.63 12.81 4.4 13.15L11.19 16.17C11.71 16.4 12.3 16.4 12.81 16.17L19.6 13.15C20.37 12.81 21 11.84 21 11"
+						stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" />
+					<path
+						d="M3 16C3 16.93 3.55 17.77 4.4 18.15L11.19 21.17C11.71 21.4 12.3 21.4 12.81 21.17L19.6 18.15C20.45 17.77 21 16.93 21 16"
+						stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" />
+				</svg>
+				<div class="button-text">Group Tabs</div>
+			</button>
+		</div>
+	</details>
+
+	<details id="temp-category" class="card">
+		<!-- category -->
+		<summary class="category-box">
+			<div class="category-text">URL Tools</div>
+			<div class="category-icon-container arrow-down">
+				<svg class="category-icon" width="24" height="25" viewBox="0 0 24 25" fill="none"
+					xmlns="http://www.w3.org/2000/svg">
+					<path d="M19.92 15.55L13.4 9.03C12.63 8.26 11.37 8.26 10.6 9.03L4.07996 15.55" stroke="currentColor"
+						stroke-width="3.5" stroke-miterlimit="10" stroke-linecap="round" stroke-linejoin="round" />
+				</svg>
+			</div>
+		</summary>
+		<!-- details -->
+		<div class="button-container">
+			<!-- Button - Get URLs -->
+			<button class="button" id="getUrls" title="Get URLs">
+				<svg class="button-icon" width="24" height="24" viewBox="0 0 24 24" fill="none"
+					xmlns="http://www.w3.org/2000/svg">
+					<path d="M22 2L13.8 10.2" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"
+						stroke-linejoin="round" />
+					<path d="M13 6.17V11H17.83" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"
+						stroke-linejoin="round" />
+					<path d="M11 2H9C4 2 2 4 2 9V15C2 20 4 22 9 22H15C20 22 22 20 22 15V13" stroke="currentColor"
+						stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" />
+				</svg>
+
+				<div class="button-text">Get URLs</div>
+			</button>
+			<!-- Button - Get URLs -->
+			<button class="button" id="grabLinksFromElement" title="Grab links from element">
+				<svg class="button-icon" width="24" height="24" viewBox="0 0 24 24" fill="none"
+					xmlns="http://www.w3.org/2000/svg">
+					<path d="M22 2L13.8 10.2" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"
+						stroke-linejoin="round" />
+					<path d="M13 6.17V11H17.83" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"
+						stroke-linejoin="round" />
+					<path d="M11 2H9C4 2 2 4 2 9V15C2 20 4 22 9 22H15C20 22 22 20 22 15V13" stroke="currentColor"
+						stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" />
+				</svg>
+
+				<div class="button-text">Grab Links</div>
+			</button>
+			<!-- Button - Open URLs -->
+			<button class="button" id="openUrls" title="Open URLs">
+				<svg class="button-icon" width="24" height="24" viewBox="0 0 24 24" fill="none"
+					xmlns="http://www.w3.org/2000/svg">
+					<path d="M13 11L21.2 2.8" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"
+						stroke-linejoin="round" />
+					<path d="M22 6.8V2H17.2" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"
+						stroke-linejoin="round" />
+					<path d="M11 2H9C4 2 2 4 2 9V15C2 20 4 22 9 22H15C20 22 22 20 22 15V13" stroke="currentColor"
+						stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" />
+				</svg>
+				<div class="button-text">Open URLs</div>
+			</button>
+			<!-- toggle verbose -->
+			<button class="selected" id="verboseBtn" title="Copy with titles">
+				<svg class="button-icon" width="24" height="24" viewBox="0 0 24 24" fill="none"
+					xmlns="http://www.w3.org/2000/svg">
+					<path d="M4.89163 13.2687L9.16582 17.5427L18.7085 8" stroke="currentColor" stroke-width="2.5"
+						stroke-linecap="round" stroke-linejoin="round" />
+				</svg>
+				<div class="button-text">Verbose</div>
+			</button>
+		</div>
+
+		<div class="textbox-container">
+			<textarea autofocus id="urlTextbox" placeholder="Paste URLs here, one per line..."></textarea>
+			<div class="toolkit">
+				<button id="copyText" title="Copy Text" class="toolkit-button">
+					<svg class="toolkit-icon" width="16" height="16" viewBox="0 0 16 16" fill="none"
+						xmlns="http://www.w3.org/2000/svg">
 						<path
-							d="M19.92 15.55L13.4 9.03C12.63 8.26 11.37 8.26 10.6 9.03L4.07996 15.55"
-							stroke="currentColor"
-							stroke-width="3.5"
-							stroke-miterlimit="10"
-							stroke-linecap="round"
-							stroke-linejoin="round"
-						/>
+							d="M10.6667 8.59999V11.4C10.6667 13.7333 9.73337 14.6667 7.40004 14.6667H4.60004C2.26671 14.6667 1.33337 13.7333 1.33337 11.4V8.59999C1.33337 6.26666 2.26671 5.33333 4.60004 5.33333H7.40004C9.73337 5.33333 10.6667 6.26666 10.6667 8.59999Z"
+							stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" />
+						<path
+							d="M14.6667 4.6V7.4C14.6667 9.73333 13.7334 10.6667 11.4 10.6667H10.6667V8.59999C10.6667 6.26666 9.73337 5.33333 7.40004 5.33333H5.33337V4.6C5.33337 2.26666 6.26671 1.33333 8.60004 1.33333H11.4C13.7334 1.33333 14.6667 2.26666 14.6667 4.6Z"
+							stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" />
 					</svg>
-				</div>
-			</summary>
-			<!-- details -->
-			<div class="button-container">
-				<!-- Button - Menu -->
-				<button
-					class="button"
-					id="enableContextMenu"
-					title="Enable Context menu"
-				>
-					<svg
-						class="button-icon"
-						width="24"
-						height="24"
-						viewBox="0 0 24 24"
-						fill="none"
-						xmlns="http://www.w3.org/2000/svg"
-					>
-						<path
-							d="M17.54 8.31C18.8986 8.31 20 7.20862 20 5.85C20 4.49138 18.8986 3.39 17.54 3.39C16.1814 3.39 15.08 4.49138 15.08 5.85C15.08 7.20862 16.1814 8.31 17.54 8.31Z"
-							stroke="currentColor"
-							stroke-width="2.5"
-							stroke-miterlimit="10"
-							stroke-linecap="round"
-							stroke-linejoin="round"
-						/>
-						<path
-							d="M6.46001 8.31C7.81863 8.31 8.92 7.20862 8.92 5.85C8.92 4.49138 7.81863 3.39 6.46001 3.39C5.10139 3.39 4 4.49138 4 5.85C4 7.20862 5.10139 8.31 6.46001 8.31Z"
-							stroke="currentColor"
-							stroke-width="2.5"
-							stroke-miterlimit="10"
-							stroke-linecap="round"
-							stroke-linejoin="round"
-						/>
-						<path
-							d="M17.54 20.61C18.8986 20.61 20 19.5086 20 18.15C20 16.7914 18.8986 15.69 17.54 15.69C16.1814 15.69 15.08 16.7914 15.08 18.15C15.08 19.5086 16.1814 20.61 17.54 20.61Z"
-							stroke="currentColor"
-							stroke-width="2.5"
-							stroke-miterlimit="10"
-							stroke-linecap="round"
-							stroke-linejoin="round"
-						/>
-						<path
-							d="M6.46001 20.61C7.81863 20.61 8.92 19.5086 8.92 18.15C8.92 16.7914 7.81863 15.69 6.46001 15.69C5.10139 15.69 4 16.7914 4 18.15C4 19.5086 5.10139 20.61 6.46001 20.61Z"
-							stroke="currentColor"
-							stroke-width="2.5"
-							stroke-miterlimit="10"
-							stroke-linecap="round"
-							stroke-linejoin="round"
-						/>
-					</svg>
-					<div class="button-text">Menu</div>
 				</button>
-				<!-- Button - Select -->
-				<button class="button" id="enableSelection" title="Enable Selection">
-					<svg
-						class="button-icon"
-						width="24"
-						height="24"
-						viewBox="0 0 24 24"
-						fill="none"
-						xmlns="http://www.w3.org/2000/svg"
-					>
+
+				<button id="clearText" title="Clear Text" class="toolkit-button">
+					<svg class="toolkit-icon broom" width="16" height="16" viewBox="0 0 16 16" fill="none"
+						xmlns="http://www.w3.org/2000/svg">
 						<path
-							d="M22 12V9C22 4 20 2 15 2H9C4 2 2 4 2 9V15C2 20 4 22 9 22H12"
-							stroke="currentColor"
-							stroke-width="2.5"
-							stroke-linecap="round"
-							stroke-linejoin="round"
-						/>
+							d="M6.58 3.77998L4.3 5.16666L3.26 3.45999C2.88 2.83333 3.08 2.00666 3.70667 1.62666C4.33334 1.24666 5.16 1.44665 5.54 2.07331L6.58 3.77998Z"
+							stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" />
 						<path
-							d="M20.96 17.84L19.33 18.39C18.88 18.54 18.52 18.89 18.37 19.35L17.82 20.98C17.35 22.39 15.37 22.36 14.93 20.95L13.08 15C12.72 13.82 13.81 12.72 14.98 13.09L20.94 14.94C22.34 15.38 22.36 17.37 20.96 17.84Z"
-							stroke="currentColor"
-							stroke-width="2.5"
-							stroke-linecap="round"
-							stroke-linejoin="round"
-						/>
+							d="M7.87996 6.10664L5.77329 7.38667C4.54662 8.13334 4.17328 9.64 4.76662 10.84L6.13328 13.6267C6.57328 14.5267 7.63996 14.84 8.49329 14.3133L12.78 11.7067C13.64 11.1867 13.8466 10.1 13.2533 9.29333L11.4066 6.8C10.6066 5.72 9.10663 5.35997 7.87996 6.10664Z"
+							stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" />
+						<path d="M7.17104 3.39865L3.75464 5.47905L5.14157 7.75665L8.55797 5.67625L7.17104 3.39865Z"
+							stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" />
+						<path d="M9.54004 11.2067L10.64 13.0133" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"
+							stroke-linejoin="round" />
+						<path d="M7.83337 12.2467L8.93337 14.0533" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"
+							stroke-linejoin="round" />
+						<path d="M11.2467 10.1667L12.3467 11.9734" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"
+							stroke-linejoin="round" />
 					</svg>
-					<div class="button-text">Select</div>
-				</button>
-				<!-- Button - Edit -->
-				<button
-					class="button"
-					id="enableContentEditing"
-					title="Enable Content Editing"
-				>
-					<svg
-						class="button-icon"
-						width="24"
-						height="24"
-						viewBox="0 0 24 24"
-						fill="none"
-						xmlns="http://www.w3.org/2000/svg"
-					>
-						<path
-							d="M11 2H9C4 2 2 4 2 9V15C2 20 4 22 9 22H15C20 22 22 20 22 15V13"
-							stroke="currentColor"
-							stroke-width="2.5"
-							stroke-linecap="round"
-							stroke-linejoin="round"
-						/>
-						<path
-							d="M16.04 3.02L8.16 10.9C7.86 11.2 7.56 11.79 7.5 12.22L7.07 15.23C6.91 16.32 7.68 17.08 8.77 16.93L11.78 16.5C12.2 16.44 12.79 16.14 13.1 15.84L20.98 7.96C22.34 6.6 22.98 5.02 20.98 3.02C18.98 1.02 17.4 1.66 16.04 3.02Z"
-							stroke="currentColor"
-							stroke-width="2.5"
-							stroke-miterlimit="10"
-							stroke-linecap="round"
-							stroke-linejoin="round"
-						/>
-						<path
-							d="M14.91 4.15C15.58 6.54 17.45 8.41 19.85 9.09"
-							stroke="currentColor"
-							stroke-width="2.5"
-							stroke-miterlimit="10"
-							stroke-linecap="round"
-							stroke-linejoin="round"
-						/>
-					</svg>
-					<div class="button-text">Edit</div>
-				</button>
-				<!-- Button - Edit -->
-				<button
-					class="button"
-					id="clearCookies"
-					title="Clear Cookies and Reload the current tab"
-				>
-					<svg
-						class="button-icon"
-						width="24"
-						height="24"
-						viewBox="0 0 24 24"
-						fill="none"
-						xmlns="http://www.w3.org/2000/svg"
-					>
-						<path
-							d="M11 2H9C4 2 2 4 2 9V15C2 20 4 22 9 22H15C20 22 22 20 22 15V13"
-							stroke="currentColor"
-							stroke-width="2.5"
-							stroke-linecap="round"
-							stroke-linejoin="round"
-						/>
-						<path
-							d="M16.04 3.02L8.16 10.9C7.86 11.2 7.56 11.79 7.5 12.22L7.07 15.23C6.91 16.32 7.68 17.08 8.77 16.93L11.78 16.5C12.2 16.44 12.79 16.14 13.1 15.84L20.98 7.96C22.34 6.6 22.98 5.02 20.98 3.02C18.98 1.02 17.4 1.66 16.04 3.02Z"
-							stroke="currentColor"
-							stroke-width="2.5"
-							stroke-miterlimit="10"
-							stroke-linecap="round"
-							stroke-linejoin="round"
-						/>
-						<path
-							d="M14.91 4.15C15.58 6.54 17.45 8.41 19.85 9.09"
-							stroke="currentColor"
-							stroke-width="2.5"
-							stroke-miterlimit="10"
-							stroke-linecap="round"
-							stroke-linejoin="round"
-						/>
-					</svg>
-					<div class="button-text">Clear Cookie</div>
 				</button>
 			</div>
-		</details>
+		</div>
+	</details>
+</body>
 
-		<details id="tabs-category" class="card">
-			<!-- category -->
-			<summary class="category-box">
-				<div class="category-text">Tab Utilities</div>
-				<div class="category-icon-container arrow-down">
-					<svg
-						class="category-icon"
-						width="24"
-						height="25"
-						viewBox="0 0 24 25"
-						fill="none"
-						xmlns="http://www.w3.org/2000/svg"
-					>
-						<path
-							d="M19.92 15.55L13.4 9.03C12.63 8.26 11.37 8.26 10.6 9.03L4.07996 15.55"
-							stroke="currentColor"
-							stroke-width="3.5"
-							stroke-miterlimit="10"
-							stroke-linecap="round"
-							stroke-linejoin="round"
-						/>
-					</svg>
-				</div>
-			</summary>
-			<!-- details -->
-			<div class="button-container">
-				<!-- Button - Reload All -->
-				<button class="button" id="reloadAll" title="Reload all tabs">
-					<svg
-						class="button-icon"
-						width="24"
-						height="24"
-						viewBox="0 0 24 24"
-						fill="none"
-						xmlns="http://www.w3.org/2000/svg"
-					>
-						<path
-							d="M14.55 21.67C18.84 20.54 22 16.64 22 12C22 6.48 17.56 2 12 2C5.33 2 2 7.56 2 7.56M2 7.56V3M2 7.56H4.01H6.44"
-							stroke="currentColor"
-							stroke-width="2.5"
-							stroke-linecap="round"
-							stroke-linejoin="round"
-						/>
-						<path
-							d="M2 12C2 17.52 6.48 22 12 22"
-							stroke="currentColor"
-							stroke-width="2.5"
-							stroke-linecap="round"
-							stroke-linejoin="round"
-							stroke-dasharray="3 3"
-						/>
-					</svg>
-
-					<div class="button-text">Reload All</div>
-				</button>
-				<!-- Button - Group Tabs-->
-				<button class="button" id="groupTabs" title="Group Tabs by Domain">
-					<svg
-						class="button-icon"
-						width="24"
-						height="24"
-						viewBox="0 0 24 24"
-						fill="none"
-						xmlns="http://www.w3.org/2000/svg"
-					>
-						<path
-							d="M13.01 2.92L18.91 5.54C20.61 6.29 20.61 7.53 18.91 8.28L13.01 10.9C12.34 11.2 11.24 11.2 10.57 10.9L4.67002 8.28C2.97002 7.53 2.97002 6.29 4.67002 5.54L10.57 2.92C11.24 2.62 12.34 2.62 13.01 2.92Z"
-							stroke="currentColor"
-							stroke-width="2.5"
-							stroke-linecap="round"
-							stroke-linejoin="round"
-						/>
-						<path
-							d="M3 11C3 11.84 3.63 12.81 4.4 13.15L11.19 16.17C11.71 16.4 12.3 16.4 12.81 16.17L19.6 13.15C20.37 12.81 21 11.84 21 11"
-							stroke="currentColor"
-							stroke-width="2.5"
-							stroke-linecap="round"
-							stroke-linejoin="round"
-						/>
-						<path
-							d="M3 16C3 16.93 3.55 17.77 4.4 18.15L11.19 21.17C11.71 21.4 12.3 21.4 12.81 21.17L19.6 18.15C20.45 17.77 21 16.93 21 16"
-							stroke="currentColor"
-							stroke-width="2.5"
-							stroke-linecap="round"
-							stroke-linejoin="round"
-						/>
-					</svg>
-					<div class="button-text">Group Tabs</div>
-				</button>
-			</div>
-		</details>
-
-		<details id="temp-category" class="card">
-			<!-- category -->
-			<summary class="category-box">
-				<div class="category-text">URL Tools</div>
-				<div class="category-icon-container arrow-down">
-					<svg
-						class="category-icon"
-						width="24"
-						height="25"
-						viewBox="0 0 24 25"
-						fill="none"
-						xmlns="http://www.w3.org/2000/svg"
-					>
-						<path
-							d="M19.92 15.55L13.4 9.03C12.63 8.26 11.37 8.26 10.6 9.03L4.07996 15.55"
-							stroke="currentColor"
-							stroke-width="3.5"
-							stroke-miterlimit="10"
-							stroke-linecap="round"
-							stroke-linejoin="round"
-						/>
-					</svg>
-				</div>
-			</summary>
-			<!-- details -->
-			<div class="button-container">
-				<!-- Button - Get URLs -->
-				<button class="button" id="getUrls" title="Get URLs">
-					<svg
-						class="button-icon"
-						width="24"
-						height="24"
-						viewBox="0 0 24 24"
-						fill="none"
-						xmlns="http://www.w3.org/2000/svg"
-					>
-						<path
-							d="M22 2L13.8 10.2"
-							stroke="currentColor"
-							stroke-width="2.5"
-							stroke-linecap="round"
-							stroke-linejoin="round"
-						/>
-						<path
-							d="M13 6.17V11H17.83"
-							stroke="currentColor"
-							stroke-width="2.5"
-							stroke-linecap="round"
-							stroke-linejoin="round"
-						/>
-						<path
-							d="M11 2H9C4 2 2 4 2 9V15C2 20 4 22 9 22H15C20 22 22 20 22 15V13"
-							stroke="currentColor"
-							stroke-width="2.5"
-							stroke-linecap="round"
-							stroke-linejoin="round"
-						/>
-					</svg>
-
-					<div class="button-text">Get URLs</div>
-				</button>
-				<!-- Button - Open URLs -->
-				<button class="button" id="openUrls" title="Open URLs">
-					<svg
-						class="button-icon"
-						width="24"
-						height="24"
-						viewBox="0 0 24 24"
-						fill="none"
-						xmlns="http://www.w3.org/2000/svg"
-					>
-						<path
-							d="M13 11L21.2 2.8"
-							stroke="currentColor"
-							stroke-width="2.5"
-							stroke-linecap="round"
-							stroke-linejoin="round"
-						/>
-						<path
-							d="M22 6.8V2H17.2"
-							stroke="currentColor"
-							stroke-width="2.5"
-							stroke-linecap="round"
-							stroke-linejoin="round"
-						/>
-						<path
-							d="M11 2H9C4 2 2 4 2 9V15C2 20 4 22 9 22H15C20 22 22 20 22 15V13"
-							stroke="currentColor"
-							stroke-width="2.5"
-							stroke-linecap="round"
-							stroke-linejoin="round"
-						/>
-					</svg>
-					<div class="button-text">Open URLs</div>
-				</button>
-				<!-- toggle bruh -->
-				<button class="selected" id="verboseBtn" title="Copy with titles">
-					<svg 
-					class="button-icon"
-					width="24"
-					height="24"
-					viewBox="0 0 24 24"
-					fill="none"
-					xmlns="http://www.w3.org/2000/svg"
-					>
-						<path d="M4.89163 13.2687L9.16582 17.5427L18.7085 8" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"/>
-					</svg>
-					<div class="button-text">Verbose</div>
-				</button>
-			</div>
-
-			<div class="textbox-container">
-				<textarea
-					autofocus
-					id="urlTextbox"
-					placeholder="Paste URLs here, one per line..."
-				></textarea>
-				<div class="toolkit">
-					<button id="copyText" title="Copy Text" class="toolkit-button">
-						<svg
-							class="toolkit-icon"
-							width="16"
-							height="16"
-							viewBox="0 0 16 16"
-							fill="none"
-							xmlns="http://www.w3.org/2000/svg"
-						>
-							<path
-								d="M10.6667 8.59999V11.4C10.6667 13.7333 9.73337 14.6667 7.40004 14.6667H4.60004C2.26671 14.6667 1.33337 13.7333 1.33337 11.4V8.59999C1.33337 6.26666 2.26671 5.33333 4.60004 5.33333H7.40004C9.73337 5.33333 10.6667 6.26666 10.6667 8.59999Z"
-								stroke="currentColor"
-								stroke-width="1.5"
-								stroke-linecap="round"
-								stroke-linejoin="round"
-							/>
-							<path
-								d="M14.6667 4.6V7.4C14.6667 9.73333 13.7334 10.6667 11.4 10.6667H10.6667V8.59999C10.6667 6.26666 9.73337 5.33333 7.40004 5.33333H5.33337V4.6C5.33337 2.26666 6.26671 1.33333 8.60004 1.33333H11.4C13.7334 1.33333 14.6667 2.26666 14.6667 4.6Z"
-								stroke="currentColor"
-								stroke-width="1.5"
-								stroke-linecap="round"
-								stroke-linejoin="round"
-							/>
-						</svg>
-					</button>
-
-					<button id="clearText" title="Clear Text" class="toolkit-button">
-						<svg
-							class="toolkit-icon broom"
-							width="16"
-							height="16"
-							viewBox="0 0 16 16"
-							fill="none"
-							xmlns="http://www.w3.org/2000/svg"
-						>
-							<path
-								d="M6.58 3.77998L4.3 5.16666L3.26 3.45999C2.88 2.83333 3.08 2.00666 3.70667 1.62666C4.33334 1.24666 5.16 1.44665 5.54 2.07331L6.58 3.77998Z"
-								stroke="currentColor"
-								stroke-width="1.5"
-								stroke-linecap="round"
-								stroke-linejoin="round"
-							/>
-							<path
-								d="M7.87996 6.10664L5.77329 7.38667C4.54662 8.13334 4.17328 9.64 4.76662 10.84L6.13328 13.6267C6.57328 14.5267 7.63996 14.84 8.49329 14.3133L12.78 11.7067C13.64 11.1867 13.8466 10.1 13.2533 9.29333L11.4066 6.8C10.6066 5.72 9.10663 5.35997 7.87996 6.10664Z"
-								stroke="currentColor"
-								stroke-width="1.5"
-								stroke-linecap="round"
-								stroke-linejoin="round"
-							/>
-							<path
-								d="M7.17104 3.39865L3.75464 5.47905L5.14157 7.75665L8.55797 5.67625L7.17104 3.39865Z"
-								stroke="currentColor"
-								stroke-width="1.5"
-								stroke-linecap="round"
-								stroke-linejoin="round"
-							/>
-							<path
-								d="M9.54004 11.2067L10.64 13.0133"
-								stroke="currentColor"
-								stroke-width="1.5"
-								stroke-linecap="round"
-								stroke-linejoin="round"
-							/>
-							<path
-								d="M7.83337 12.2467L8.93337 14.0533"
-								stroke="currentColor"
-								stroke-width="1.5"
-								stroke-linecap="round"
-								stroke-linejoin="round"
-							/>
-							<path
-								d="M11.2467 10.1667L12.3467 11.9734"
-								stroke="currentColor"
-								stroke-width="1.5"
-								stroke-linecap="round"
-								stroke-linejoin="round"
-							/>
-						</svg>
-					</button>
-				</div>
-			</div>
-		</details>
-	</body>
 </html>
