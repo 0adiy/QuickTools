@@ -58,12 +58,14 @@ function onClickSelectElement(event) {
   const selectedElement = event.target;
   deactivateSelectionMode();
 
-  const links = [...selectedElement.querySelectorAll("a")].map(a => a.href);
+  const linkObjs = [...selectedElement.querySelectorAll("a")].map(a => {
+    return { url: a.href, title: a.innerText };
+  });
 
   // Send back to popup
   chrome.runtime.sendMessage({
     type: "LINKS_FROM_SELECTION",
-    links,
+    linkObjs,
   });
 }
 

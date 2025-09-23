@@ -1,15 +1,26 @@
 chrome.runtime.onMessage.addListener((message, sender, sendResponse) => {
   if (message.type === "LINKS_FROM_SELECTION") {
-    const links = message.links;
+    const linkObjs = message.linkObjs;
 
-    // FIXME - Store in correct part of local storage
-    chrome.storage.local.get(["urlTextbox"]).then(result => {
-      // TODO - check if verbose is on or not
-      const res = result.urlTextbox + links.join("\n");
+    chrome.storage.local.get(["urlTextbox", "verbose"]).then(result => {
+      let res = "";
 
-      console.log("result: ", result, " res: ", res);
+      for (let ob of linkObjs) {
+        if (result.verbose) {
+          res += `# ${ob.title}\n${ob.url}\n\n`;
+        } else {
+          res += `${ob.url}\n`;
+        }
+      }
+
+      // early return
+      if (res.length === 0) return;
+
+      res = result.urlTextbox + res;
+
+      // console.log("result: ", result, " res: ", res);
       chrome.storage.local.set({ urlTextbox: res }, () => {
-        console.log("Links saved.");
+        // console.log("Links saved.");
       });
     });
   }
