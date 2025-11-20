@@ -22,6 +22,11 @@ function activateSelectionMode() {
 
   document.addEventListener("mouseover", onHoverElement);
   document.addEventListener("click", onClickSelectElement);
+
+  // Deactivate if Escape pressed
+  document.addEventListener("keydown", event => {
+    if (event.key == "Escape") deactivateSelectionMode();
+  });
 }
 
 function deactivateSelectionMode() {

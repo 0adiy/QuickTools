@@ -14,7 +14,7 @@ export function handleInput() {
   chrome.storage.local.set({ urlTextbox: value });
 }
 
-export async function handleGetUrls(append = true, titles = false) {
+export async function handleCollectTabs(append = true, titles = false) {
   const tabs = await chrome.tabs.query({ currentWindow: true });
   if (append == false) $("#urlTextbox").value = "";
 
@@ -202,14 +202,21 @@ export function handleComment() {
   textareaRef.selectionEnd = end + 8;
 }
 
-export function handleGrabLinksFromElement() {
-  chrome.tabs.query({ active: true, currentWindow: true }, tabs => {
-    const tabId = tabs[0].id;
+export async function handleGrabLinksFromElement() {
+  const tabs = await chrome.tabs.query({ active: true, currentWindow: true });
 
-    // send to content script
-    chrome.tabs.sendMessage(tabId, { action: "activate_link_grabber" });
+  const tabId = tabs[0].id;
 
-    // close popup so user can interact with the page
-    window.close();
-  });
+  // send to content script
+  chrome.tabs
+    .sendMessage(tabId, { action: "activate_link_grabber" })
+    .catch(err => {
+      console.error(
+        "the current tab doesn't contain the content-script, error: ",
+        err
+      );
+    });
+
+  // close popup so user can interact with the page
+  window.close();
 }

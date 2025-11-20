@@ -7,7 +7,7 @@
     "default_popup": "popup/popup.html"
   },
   "background": {
-    "service_worker": "background.js",
+    "service_worker": "background/main.js",
     "type": "module"
   },
   "permissions": [
@@ -20,6 +20,15 @@
     "storage",
     "contextMenus"
   ],
+  "commands": {
+    "collect-tabs": {
+      "suggested_key": {
+        "default": "Ctrl+Shift+Y",
+        "windows": "Ctrl+Shift+Y"
+      },
+      "description": "Collect all open tab titles and links"
+    }
+  },
   "host_permissions": ["<all_urls>"],
   "content_scripts": [
     {

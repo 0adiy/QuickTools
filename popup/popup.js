@@ -1,6 +1,6 @@
 import {
   handleInput,
-  handleGetUrls,
+  handleCollectTabs,
   handleOpenUrls,
   handleClearText,
   handleCopyText,
@@ -100,17 +100,17 @@ chrome.storage.local
 // Attaching listeners //
 /////////////////////////
 $("#urlTextbox").addEventListener("input", handleInput);
-$("#getUrls").addEventListener("click", e => {
-  // based on verbose or not, pass titles=true/false in handleGetUrls
+$("#collectTabs").addEventListener("click", e => {
+  // based on verbose or not, pass titles=true/false in handleCollectTabs
   chrome.storage.local
     .get(["verbose"])
     .then(result => result.verbose)
-    .then(verbose => handleGetUrls(true, verbose));
+    .then(verbose => handleCollectTabs(true, verbose));
 });
-$("#getUrls").addEventListener("contextmenu", e => {
+$("#collectTabs").addEventListener("contextmenu", e => {
   e.preventDefault();
-  if (e.ctrlKey) handleGetUrls(false, true);
-  else handleGetUrls(false, false);
+  if (e.ctrlKey) handleCollectTabs(false, true);
+  else handleCollectTabs(false, false);
 });
 $("#openUrls").addEventListener("click", handleOpenUrls);
 $("#clearText").addEventListener("click", handleClearText);
