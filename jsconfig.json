@@ -1,0 +1,14 @@
+{
+	"compilerOptions": {
+		"target": "es2020",
+		"module": "commonjs",
+		"allowJs": true,
+		"checkJs": true,
+		"lib": ["dom", "es2020"],
+		"types": ["chrome"]
+	},
+	"include": [
+		"background/**/*",
+		"popup/**/*"
+	]
+}
