@@ -6,6 +6,9 @@
   "action": {
     "default_popup": "popup/popup.html"
   },
+  "side_panel": {
+    "default_path": "popup/popup.html"
+  },
   "background": {
     "service_worker": "background/main.js",
     "type": "module"
@@ -18,7 +21,8 @@
     "tabGroups",
     "scripting",
     "storage",
-    "contextMenus"
+    "contextMenus",
+    "sidePanel"
   ],
   "commands": {
     "collect-tabs": {
@@ -27,6 +31,13 @@
         "windows": "Ctrl+Shift+Y"
       },
       "description": "Collect all open tab titles and links"
+    },
+    "search-selection-on-google": {
+      "suggested_key": {
+        "default": "Ctrl+Shift+O",
+        "windows": "Ctrl+Shift+O"
+      },
+      "description": "Search selection on google"
     }
   },
   "host_permissions": ["<all_urls>"],

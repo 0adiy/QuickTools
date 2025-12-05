@@ -1,3 +1,34 @@
+import { FeatureClient } from "./lib/featureclient.js";
+import { StoreClient } from "./lib/storeclient.js";
+
+// Registeration Commands
+import { registerScrapeLinks } from "./features/scrapeLinks.js";
+import { registerCollectTabs } from "./features/collectTabs.js";
+import { registerSearchSelection } from "./features/searchSelection.js";
+
+const storeClient = new StoreClient();
+
+const client = new FeatureClient(storeClient);
+
+// NOTE - Features should have been dynamically auto imported from features folder but that is
+// not possible since we are in a browser extension context where dynamic imports are not allowed
+
+const features = [
+  registerScrapeLinks,
+  registerCollectTabs,
+  registerSearchSelection,
+];
+
+// Call register func of each feature passing client in
+features.forEach(regFunc => regFunc(client));
+
+client.startListening();
+
+// ---------------------
+// ---------------------
+// ---------------------
+
+// TODO - Move this to features and register a message handler
 chrome.runtime.onMessage.addListener((message, sender, sendResponse) => {
   if (message.type === "LINKS_FROM_SELECTION") {
     const linkObjs = message.linkObjs;
@@ -25,35 +56,3 @@ chrome.runtime.onMessage.addListener((message, sender, sendResponse) => {
     });
   }
 });
-
-chrome.commands.onCommand.addListener(command => {
-  if (command == "collect-tabs") {
-    handleCollectTabs();
-  }
-});
-
-async function handleCollectTabs() {
-  let { textboxValue, verbose } = await chrome.storage.local.get([
-    "urlTextbox",
-    "verbose",
-  ]);
-
-  // TODO : getting verbose or urlTextbox should be a function that always fetches from storage
-  // then handling of setting the new value should again be part of the same struct/class
-  // it can also have caching using private `updated` boolean that is set, when you set a value,
-  // and next job of accessing will actually fetch from storage, unsetting the bool,
-  // otherwise it can just return the current holding value
-  textboxValue = textboxValue || "";
-
-  const tabs = await chrome.tabs.query({ currentWindow: true });
-
-  if (textboxValue.length > 0) textboxValue += "\n";
-
-  if (verbose) {
-    textboxValue += tabs.map(tab => `#${tab.title}\n${tab.url}\n`).join("\n");
-  } else {
-    textboxValue += tabs.map(tab => tab.url).join("\n");
-  }
-
-  chrome.storage.local.set({ urlTextbox: textboxValue });
-}
