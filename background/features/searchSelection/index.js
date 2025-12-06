@@ -1,4 +1,6 @@
-/** @import { FeatureClient, MessageHandlerCb, CommandHandlerCb} from "../lib/featureclient.js" */
+/** @import { FeatureClient, MessageHandlerCb, CommandHandlerCb} from "../../lib/featureclient.js" */
+
+import { injectedFunc } from "./injected.js";
 
 const COMMAND_NAME = "search-selection-on-google";
 const MESSAGE_NAME = "search-selection-on-google";
@@ -13,17 +15,12 @@ export function registerSearchSelection(client) {
 
 /** @type {CommandHandlerCb} */
 async function handleOpenSelectionOnGoogle(client, tab) {
-  // NOTE - The func in executeScript() is executed in context of target tab
-  // hence it can't use chrome apis other than the runtime.sendMessage
-
+  // basically calling the function like
+  // injectedFunc(MESSAGE_NAME)
   chrome.scripting.executeScript({
-    target: { tabId: tab.id },
-    func: async () => {
-      const query = document.getSelection().toString();
-
-      // sending `query` to correct `type` so it's caught by our own defined handler below
-      chrome.runtime.sendMessage({ query, type: MESSAGE_NAME });
-    },
+    target: { tabId: tab.id, allFrames: true },
+    func: injectedFunc,
+    args: [MESSAGE_NAME],
   });
 }
 

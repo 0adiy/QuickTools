@@ -4,7 +4,7 @@ import { StoreClient } from "./lib/storeclient.js";
 // Registeration Commands
 import { registerScrapeLinks } from "./features/scrapeLinks.js";
 import { registerCollectTabs } from "./features/collectTabs.js";
-import { registerSearchSelection } from "./features/searchSelection.js";
+import { registerSearchSelection } from "./features/searchSelection/index.js";
 
 const storeClient = new StoreClient();
 
