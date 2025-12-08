@@ -2,6 +2,7 @@
 // hence it can't use chrome apis other than the runtime.sendMessage
 
 // TODO - Future scope: we can use `eslint-no-closure` here provided via plugins if eslint system is setup
+// although that has to respect the `chrome` and `document` references being available here though so maybe not?
 
 /**
  * [WARNING]: This function is injected into the content script context via chrome.scripting.executeScript.
@@ -10,6 +11,8 @@
  */
 function injectedFunc(messageType) {
   const query = document.getSelection().toString();
+  if (query.length === 0) return;
+
   chrome.runtime.sendMessage({ query, type: messageType });
 }
 

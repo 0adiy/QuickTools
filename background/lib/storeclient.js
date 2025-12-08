@@ -1,8 +1,9 @@
 // This is a custom store, so it should hold all the kinds of data required by the whole extension here
 // also have setters and getters for each of them with validation (essentially models)
 
-// NOTE - caching layer can be added if needed using private variables like _isUpdatedVerboseValue or something
+// NOTE - caching layer can be added if needed using private variables like _isUpdated or something
 
+// TODO - store all config in single JSON and load and return that as well
 class StoreClient {
   constructor(storageType) {
     this._currnentStore = storageType ?? chrome.storage.local;

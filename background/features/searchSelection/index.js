@@ -18,7 +18,7 @@ async function handleOpenSelectionOnGoogle(client, tab) {
   // basically calling the function like
   // injectedFunc(MESSAGE_NAME)
   chrome.scripting.executeScript({
-    target: { tabId: tab.id, allFrames: true },
+    target: { tabId: tab.id, allFrames: false },
     func: injectedFunc,
     args: [MESSAGE_NAME],
   });
