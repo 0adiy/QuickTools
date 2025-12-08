@@ -41,8 +41,10 @@ class StoreClient {
   async appendTextBoxValue(textToAppend) {
     let textBoxValue = await this.getTextBoxValue();
 
-    // Adding extra new line as new data going in should
-    if (textBoxValue.length > 0) textBoxValue += "\n";
+    // Adding extra new line (if not present already)
+    // as new data going in should be on next line
+    if (textBoxValue.length > 0 && textBoxValue[0] != "\n")
+      textBoxValue += "\n";
 
     textBoxValue += textToAppend;
 
