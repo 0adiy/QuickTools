@@ -2,7 +2,7 @@
 ## About
 QuickTools is a chromium based browser extension that helps developers become power users.
 
-Built using vanilla HTML, CSS and JS, so easy to understand and hack, you are highly encouraged to modify and add features that you need.
+Using minimal bundling tricks, and primarily uses vanilla HTML, CSS and JS so easy to understand and hack, you are highly encouraged to modify and add features that you need.
 
 It is designed to be used primarily as developer extension and requests all sorts of permissions due to inherent trust on developer being you.
 It also doesn't stop you from doing silly things like opening 10,000 links at once

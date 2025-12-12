@@ -38,14 +38,14 @@
         "windows": "Ctrl+Shift+O"
       },
       "description": "Search selection on google"
+    },
+    "grab-links-from-selection": {
+      "suggested_key": {
+        "default": "Ctrl+Shift+B",
+        "windows": "Ctrl+Shift+B"
+      },
+      "description": "Grab links from selected box"
     }
   },
-  "host_permissions": ["<all_urls>"],
-  "content_scripts": [
-    {
-      "matches": ["<all_urls>"],
-      "js": ["contentscripts/grabLinksFromElement.js"],
-      "run_at": "document_idle"
-    }
-  ]
+  "host_permissions": ["<all_urls>"]
 }
