@@ -203,14 +203,9 @@ export function handleComment() {
 }
 
 export async function handleGrabLinksFromElement() {
-  const tabs = await chrome.tabs.query({ active: true, currentWindow: true });
-
-  const tabId = tabs[0].id;
-
   // send to background
   chrome.runtime.sendMessage({
     type: "activate-selection-mode-POPUP",
-    tabId,
   });
 
   // close popup so user can interact with the page

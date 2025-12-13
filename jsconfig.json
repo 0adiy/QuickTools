@@ -8,7 +8,6 @@
 		"types": ["chrome"]
 	},
 	"include": [
-		"background/**/*",
-		"popup/**/*"
+		"src/**/*",
 	]
 }

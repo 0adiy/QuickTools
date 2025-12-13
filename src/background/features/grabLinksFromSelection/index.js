@@ -8,7 +8,7 @@ const MESSAGE_ACTIVATE_SELECTION_CONTENT = "activate-selection-mode-BACKGROUND";
 
 // TODO - auto-gen it's path with only the last file path name being correct, maybe using vite?
 const CONTENT_SCRIPT_PATH =
-  "background/features/grabLinksFromSelection/injectedContentScript.js";
+  "src/background/features/grabLinksFromSelection/injectedContentScript.js";
 
 /** @param {FeatureClient} client */
 export function registerGrabLinksFromSelection(client) {
@@ -19,7 +19,10 @@ export function registerGrabLinksFromSelection(client) {
 
 /** @type {MessageHandlerCb} */
 async function handlePopupMessage(client, message, sender, sendResponse) {
-  await injectAndActivate(message.tabId);
+  const tabs = await chrome.tabs.query({ active: true, currentWindow: true });
+  const tabId = tabs[0].id;
+
+  await injectAndActivate(tabId);
 }
 
 /** @type {CommandHandlerCb} */
@@ -60,7 +63,7 @@ async function injectAndActivate(tabId) {
     const response = await chrome.tabs.sendMessage(tabId, {
       type: MESSAGE_ACTIVATE_SELECTION_CONTENT,
     });
-    // console.log("Script already present, sent message successfully:", response);
+    console.log("Script already present, sent message successfully:", response);
   } catch (error) {
     // 2. If sendMessage fails, it usually means the script isn't loaded in the page yet.
 
@@ -72,9 +75,10 @@ async function injectAndActivate(tabId) {
       });
 
       // After successful injection, now send the message to activate the mode
-      await chrome.tabs.sendMessage(tabId, {
+      const response = await chrome.tabs.sendMessage(tabId, {
         type: MESSAGE_ACTIVATE_SELECTION_CONTENT,
       });
+      console.log("sent message successfully:", response);
     } catch (injectionError) {
       console.error("Failed to inject script or send message:", injectionError);
     }
