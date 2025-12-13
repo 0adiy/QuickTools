@@ -2,8 +2,9 @@
 
 const COMMAND_NAME = "grab-links-from-selection";
 
-const MESSAGE_GRAB_LINKS = "grab-links-from-selection"; // comes from content script to bg
-const MESSAGE_ACTIVATE_SELECTION = "activate-selection-mode"; // goes from bg to content script
+const MESSAGE_ACTIVATE_SELECTION_POPUP = "activate-selection-mode-POPUP"; // req from popup
+const MESSAGE_GRABBED_LINKS = "grab-links-from-selection-CONTENT"; // comes from content script to bg
+const MESSAGE_ACTIVATE_SELECTION_CONTENT = "activate-selection-mode-BACKGROUND"; // goes from bg to content script
 
 // TODO - auto-gen it's path with only the last file path name being correct, maybe using vite?
 const CONTENT_SCRIPT_PATH =
@@ -12,40 +13,27 @@ const CONTENT_SCRIPT_PATH =
 /** @param {FeatureClient} client */
 export function registerGrabLinksFromSelection(client) {
   client.registerCommand(COMMAND_NAME, handleCommand);
-  client.registerMessage(MESSAGE_GRAB_LINKS, handleMessageSuccess);
+  client.registerMessage(MESSAGE_GRABBED_LINKS, handleContentScriptMessage);
+  client.registerMessage(MESSAGE_ACTIVATE_SELECTION_POPUP, handlePopupMessage);
+}
+
+/** @type {MessageHandlerCb} */
+async function handlePopupMessage(client, message, sender, sendResponse) {
+  await injectAndActivate(message.tabId);
 }
 
 /** @type {CommandHandlerCb} */
 async function handleCommand(client, tab) {
-  try {
-    // 1. Try sending a message FIRST.
-    // If the content script is already injected and listening, this works.
-    const response = await chrome.tabs.sendMessage(tab.id, {
-      type: MESSAGE_ACTIVATE_SELECTION,
-    });
-    // console.log("Script already present, sent message successfully:", response);
-  } catch (error) {
-    // 2. If sendMessage fails, it usually means the script isn't loaded in the page yet.
-
-    // Inject the content script dynamically using the Scripting API
-    try {
-      await chrome.scripting.executeScript({
-        target: { tabId: tab.id },
-        files: [CONTENT_SCRIPT_PATH],
-      });
-
-      // After successful injection, now send the message to activate the mode
-      await chrome.tabs.sendMessage(tab.id, {
-        type: MESSAGE_ACTIVATE_SELECTION,
-      });
-    } catch (injectionError) {
-      console.error("Failed to inject script or send message:", injectionError);
-    }
-  }
+  await injectAndActivate(tab.id);
 }
 
 /** @type {MessageHandlerCb} */
-async function handleMessageSuccess(client, message, sender, sendResponse) {
+async function handleContentScriptMessage(
+  client,
+  message,
+  sender,
+  sendResponse
+) {
   const { linkObjs } = message;
 
   const verbose = await client.storeClient.getVerboseValue();
@@ -63,4 +51,32 @@ async function handleMessageSuccess(client, message, sender, sendResponse) {
   if (res.length === 0) return;
 
   client.storeClient.appendTextBoxValue(res);
+}
+
+async function injectAndActivate(tabId) {
+  try {
+    // 1. Try sending a message FIRST.
+    // If the content script is already injected and listening, this works.
+    const response = await chrome.tabs.sendMessage(tabId, {
+      type: MESSAGE_ACTIVATE_SELECTION_CONTENT,
+    });
+    // console.log("Script already present, sent message successfully:", response);
+  } catch (error) {
+    // 2. If sendMessage fails, it usually means the script isn't loaded in the page yet.
+
+    // Inject the content script dynamically using the Scripting API
+    try {
+      await chrome.scripting.executeScript({
+        target: { tabId },
+        files: [CONTENT_SCRIPT_PATH],
+      });
+
+      // After successful injection, now send the message to activate the mode
+      await chrome.tabs.sendMessage(tabId, {
+        type: MESSAGE_ACTIVATE_SELECTION_CONTENT,
+      });
+    } catch (injectionError) {
+      console.error("Failed to inject script or send message:", injectionError);
+    }
+  }
 }

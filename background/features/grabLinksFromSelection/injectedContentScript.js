@@ -1,13 +1,15 @@
 //////////////////
 // Driver code //
 /////////////////
-const MESSAGE_ACTIVATE = "activate-selection-mode"; // recieved from bg
+const MESSAGE_ACTIVATE = "activate-selection-mode-BACKGROUND"; // recieved from bg
 const MESSAGE_GRAB_LINKS = "grab-links-from-selection"; // sent to bg
 
 let isSelectionModeActive = false; // global tracking variable
 let currentCursorType = document.body.style.cursor;
 
 chrome.runtime.onMessage.addListener(onMessageActivate);
+
+//console.log("Content Script loaded from Quicktools");
 
 /////////////
 // Helpers //
@@ -35,6 +37,8 @@ function activateSelectionMode() {
 
   // Deactivate if Escape pressed
   document.addEventListener("keydown", onEscPressed);
+
+  // console.log("Activated Selection Mode");
 }
 
 function deactivateSelectionMode() {
@@ -50,6 +54,7 @@ function deactivateSelectionMode() {
 
   // Remove Esc press listener
   document.removeEventListener("keydown", onEscPressed);
+  // console.log("Deactivated Selection Mode");
 }
 
 /** On hover highlight the element that will be selected

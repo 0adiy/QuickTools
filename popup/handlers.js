@@ -207,15 +207,11 @@ export async function handleGrabLinksFromElement() {
 
   const tabId = tabs[0].id;
 
-  // send to content script
-  chrome.tabs
-    .sendMessage(tabId, { action: "activate_link_grabber" })
-    .catch(err => {
-      console.error(
-        "the current tab doesn't contain the content-script, error: ",
-        err
-      );
-    });
+  // send to background
+  chrome.runtime.sendMessage({
+    type: "activate-selection-mode-POPUP",
+    tabId,
+  });
 
   // close popup so user can interact with the page
   window.close();
