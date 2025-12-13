@@ -22,7 +22,8 @@
     "scripting",
     "storage",
     "contextMenus",
-    "sidePanel"
+    "sidePanel",
+    "search"
   ],
   "commands": {
     "collect-tabs": {

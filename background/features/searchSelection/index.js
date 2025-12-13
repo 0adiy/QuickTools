@@ -8,13 +8,13 @@ const MESSAGE_NAME = "search-selection-on-google";
 /** @param {FeatureClient} client */
 export function registerSearchSelection(client) {
   // NOTE - Same command name needs to be mentioned in extension's manifest.json
-  client.registerCommand(COMMAND_NAME, handleOpenSelectionOnGoogle);
+  client.registerCommand(COMMAND_NAME, handleSearchSelectionCommand);
 
-  client.registerMessage(MESSAGE_NAME, handleOpenSelectionOnGoogleMessage);
+  client.registerMessage(MESSAGE_NAME, handleSearchSelectionMessage);
 }
 
 /** @type {CommandHandlerCb} */
-async function handleOpenSelectionOnGoogle(client, tab) {
+async function handleSearchSelectionCommand(client, tab) {
   // basically calling the function like
   // injectedFunc(MESSAGE_NAME)
   chrome.scripting.executeScript({
@@ -25,15 +25,19 @@ async function handleOpenSelectionOnGoogle(client, tab) {
 }
 
 /** @type {MessageHandlerCb} */
-async function handleOpenSelectionOnGoogleMessage(
+async function handleSearchSelectionMessage(
   client,
   message,
   sender,
   sendResponse
 ) {
-  const tabRef = await chrome.tabs.create({
-    url: `https://www.google.com/search?q=${message.query}`,
-    active: true,
-  });
+  await chrome.search.query({ text: message.query, disposition: "NEW_TAB" });
+
+  // NOTE - Alternate approch that doesn't use the default search engine
+
+  // const tabRef = await chrome.tabs.create({
+  //   url: `https://www.google.com/search?q=${message.query}`,
+  //   active: true,
+  // });
   // console.log("tab created:", tabRef);
 }
