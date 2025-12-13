@@ -45,6 +45,13 @@
         "windows": "Ctrl+Shift+B"
       },
       "description": "Grab links from selected box"
+    },
+    "add-tab-to-new-group": {
+      "suggested_key": {
+        "default": "Ctrl+Shift+B",
+        "windows": "Ctrl+Shift+B"
+      },
+      "description": "Add current tab to new group"
     }
   },
   "host_permissions": ["<all_urls>"]

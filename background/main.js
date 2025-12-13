@@ -6,6 +6,7 @@ import { registerScrapeLinks } from "./features/scrapeLinks.js";
 import { registerCollectTabs } from "./features/collectTabs.js";
 import { registerSearchSelection } from "./features/searchSelection/index.js";
 import { registerGrabLinksFromSelection } from "./features/grabLinksFromSelection/index.js";
+import { registerAddToNewGroup } from "./features/addTabToNewGroup.js";
 
 const storeClient = new StoreClient();
 
@@ -19,6 +20,7 @@ const features = [
   registerCollectTabs,
   registerSearchSelection,
   registerGrabLinksFromSelection,
+  registerAddToNewGroup,
 ];
 
 // Call register func of each feature passing client in
