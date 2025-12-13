@@ -5,6 +5,7 @@ const MESSAGE_ACTIVATE = "activate-selection-mode"; // recieved from bg
 const MESSAGE_GRAB_LINKS = "grab-links-from-selection"; // sent to bg
 
 let isSelectionModeActive = false; // global tracking variable
+let currentCursorType = document.body.style.cursor;
 
 chrome.runtime.onMessage.addListener(onMessageActivate);
 
@@ -38,7 +39,7 @@ function activateSelectionMode() {
 
 function deactivateSelectionMode() {
   isSelectionModeActive = false;
-  document.body.style.cursor = "default";
+  document.body.style.cursor = currentCursorType ?? "default";
 
   document.removeEventListener("mouseover", onHoverElement);
   document.removeEventListener("click", onClickSelectElement);
