@@ -9,7 +9,7 @@ export function registerCollectTabs(client) {
 /** @type {CommandHandlerCb} */
 async function handleCollectTabs(client, tab) {
   // Fetch settings
-  let textboxValue = await client.storeClient.getTextBoxValue();
+  // let textboxValue = await client.storeClient.getTextBoxValue();
   const verbose = await client.storeClient.getVerboseValue();
 
   // Collect tabs of current window
