@@ -1,30 +1,13 @@
 import { FeatureClient } from "./lib/featureclient.js";
 import { StoreClient } from "./lib/storeclient.js";
-
-// Registeration Commands
-import { registerScrapeLinks } from "./features/scrapeLinks.js";
-import { registerCollectTabs } from "./features/collectTabs.js";
-import { registerSearchSelection } from "./features/searchSelection/index.js";
-import { registerGrabLinksFromSelection } from "./features/grabLinksFromSelection/index.js";
-import { registerAddToNewGroup } from "./features/addTabToNewGroup.js";
+import * as features from "./features/regFuncExports.js";
 
 const storeClient = new StoreClient();
-
 const client = new FeatureClient(storeClient);
 
-// NOTE - Features should have been dynamically auto imported from features folder but that is
-// not possible since we are in a browser extension context where dynamic imports are not allowed
-
-const features = [
-  registerScrapeLinks,
-  registerCollectTabs,
-  registerSearchSelection,
-  registerGrabLinksFromSelection,
-  registerAddToNewGroup,
-];
-
 // Call register func of each feature passing client in
-features.forEach(regFunc => regFunc(client));
+const featureList = Object.values(features);
+featureList.forEach(regFunc => regFunc(client));
 
 client.startListening();
 
