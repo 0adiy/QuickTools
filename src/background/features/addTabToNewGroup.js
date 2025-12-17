@@ -11,7 +11,8 @@ export function registerAddToNewGroup(client) {
 /** @type {CommandHandlerCb} */
 async function handleCommand(client, tab) {
   // Validations
-  if (tab.groupId != null) return;
+  // tab.groupId is -1 when it's ungrouped, so return early if in any group
+  if (tab.groupId != -1) return;
 
   chrome.tabs.group({ tabIds: [tab.id] });
 }
